@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="nui://game/ui/jquery.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="raphael.min.js"></script>
+    <script type="text/javascript" src="wheelnav.min.js"></script>
+
+    <!-- Generated CSS code -->
+    <style>
+        #wheelDiv > svg {
+            width: 100%;
+            height: 100%;
+        }
+        #wheelDiv {
+            width: 500px;
+            height: 500px;
+            margin: auto;
+        }
+        #container {
+            margin-top: 18%;
+            flex-direction: column;
+        }
+
+        [class|=wheelnav-wheelDiv-slice-basic] { fill: #555; stroke:#aaa; stroke-width: 2; fill-opacity: 0.50; }
+        [class|=wheelnav-wheelDiv-slice-selected] { fill: #555; stroke: #aaa; stroke-width: 2; fill-opacity: 0.50; }
+        [class|=wheelnav-wheelDiv-slice-hover] { fill: #555;  stroke: #aaa;  stroke-width: 2; fill-opacity: 0.85; cursor: pointer; }
+
+        [class|=wheelnav-wheelDiv-title-basic] { fill: #fff; stroke: none; }
+        [class|=wheelnav-wheelDiv-title-selected] { fill: #fff; stroke: none; }
+        [class|=wheelnav-wheelDiv-title-hover] { fill: #fff; stroke: none; cursor: pointer; }
+        [class|=wheelnav-wheelDiv-title] > tspan { font: Verdana; font-weight: normal; font-size: 12px; font-weight: normal; text-shadow: 1px 1px #000; }
+    </style>
+
+    <!-- Generated Javascript code -->
+    <script type="text/javascript">
+        $(function() {
+            window.addEventListener('message', function(event) {
+                // Show radial menu
+                if (event.data.type == 'show') {
+                    document.body.style.display = "block";
+                }
+                // Hide radial menu
+                else if (event.data.type == 'hide') {
+                    document.body.style.display = "none";
+                }
+                // Initialize radial menu
+                else if (event.data.type == 'init') {
+                    // Set global keybind and resource name
+                    menuKeybind = event.data.data.keybind;
+                    resourceName = event.data.resourceName
+
+                    // Get number of wheels and create array to hold them
+                    var numWheels = event.data.data.wheels.length;
+                    var wheels = new Array(numWheels);
+
+                    // Create and initialize all wheels
+                    for (var i = 0; i < numWheels; i++) {
+                        // Create new wheelnav and add to array of wheels
+                        if (i == 0) {
+                            wheels[i] = new wheelnav('wheelDiv', null);
+                        }
+                        else {
+                            wheels[i] = new wheelnav('wheelDiv', wheels[0].raphael);
+                        }
+
+                        // Get wheel data from JSON and customize wheel
+                        wheelData = event.data.data.wheels[i];
+                        wheels[i].navAngle = wheelData.navAngle;
+                        wheels[i].clickModeRotate = false;
+                        wheels[i].slicePathFunction = slicePath().DonutSlice;
+                        wheels[i].slicePathCustom = slicePath().DonutSliceCustomization();
+                        wheels[i].slicePathCustom.minRadiusPercent = wheelData.minRadiusPercent;
+                        wheels[i].slicePathCustom.maxRadiusPercent = wheelData.maxRadiusPercent;
+                        wheels[i].sliceSelectedPathCustom = wheels[i].slicePathCustom;
+                        wheels[i].sliceInitPathCustom = wheels[i].slicePathCustom;
+                        wheels[i].createWheel(wheelData.labels);
+                        
+                        // Clear selected items and add mouse functions
+                        for (var j = 0; j < wheels[i].navItems.length; j++) {
+                            // Clear selected
+                            wheels[i].navItems[j].selected = false;
+
+                            // Add events for both navSlice and navTitle
+                            const execCmd = wheelData.commands[j]
+                            wheels[i].navItems[j].navSlice.mousedown(function () {
+                                $.post('http://'+resourceName+'/sliceclicked', JSON.stringify({command: execCmd}));
+                            });
+                            wheels[i].navItems[j].navTitle.mousedown(function () {
+                                $.post('http://'+resourceName+'/sliceclicked', JSON.stringify({command: execCmd}));
+                            });
+                        }
+
+                        // Refresh menu
+                        wheels[i].refreshWheel();
+                    }
+
+                    // Hide menu by default
+                    document.body.style.display = "none";
+                }
+            });
+            window.addEventListener("keyup", function onEvent(event) {
+                // Close menu when key is released
+                if (event.key === menuKeybind) {
+                    $.post('http://'+resourceName+'/closemenu', JSON.stringify({}));
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <!-- Generated HTML code -->
+    <div id="container">
+        <div id='wheelDiv' data-wheelnav data-wheelnav-cssmode data-wheelnav-init>
+        </div>
+    </div>
+</body>
+</html>
