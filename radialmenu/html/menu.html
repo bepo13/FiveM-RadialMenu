@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="text/javascript" src="nui://game/ui/jquery.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    
     <script type="text/javascript" src="raphael.min.js"></script>
     <script type="text/javascript" src="wheelnav.min.js"></script>
+    <script type="text/javascript" src="nui://game/ui/jquery.js"></script>
 
     <!-- Generated CSS code -->
     <style>
@@ -21,15 +21,6 @@
             margin-top: 18%;
             flex-direction: column;
         }
-
-        [class|=wheelnav-wheelDiv-slice-basic] { fill: #555; stroke:#aaa; stroke-width: 2; fill-opacity: 0.50; }
-        [class|=wheelnav-wheelDiv-slice-selected] { fill: #555; stroke: #aaa; stroke-width: 2; fill-opacity: 0.50; }
-        [class|=wheelnav-wheelDiv-slice-hover] { fill: #555;  stroke: #aaa;  stroke-width: 2; fill-opacity: 0.85; cursor: pointer; }
-
-        [class|=wheelnav-wheelDiv-title-basic] { fill: #fff; stroke: none; }
-        [class|=wheelnav-wheelDiv-title-selected] { fill: #fff; stroke: none; }
-        [class|=wheelnav-wheelDiv-title-hover] { fill: #fff; stroke: none; cursor: pointer; }
-        [class|=wheelnav-wheelDiv-title] > tspan { font: Verdana; font-weight: normal; font-size: 12px; font-weight: normal; text-shadow: 1px 1px #000; }
     </style>
 
     <!-- Generated Javascript code -->
@@ -39,6 +30,16 @@
                 // Show radial menu
                 if (event.data.type == 'show') {
                     document.body.style.display = "block";
+
+                    // Clear selected and refresh wheels
+                    for (var i = 0; i < numWheels; i++) {
+                        for (var j = 0; j < wheels[i].navItems.length; j++) {
+                            // Clear selected
+                            wheels[i].navItems[j].selected = false;
+                        }
+                        // Refresh menu
+                        wheels[i].refreshWheel();
+                    }
                 }
                 // Hide radial menu
                 else if (event.data.type == 'hide') {
@@ -51,14 +52,14 @@
                     resourceName = event.data.resourceName
 
                     // Get number of wheels and create array to hold them
-                    var numWheels = event.data.data.wheels.length;
-                    var wheels = new Array(numWheels);
+                    numWheels = event.data.data.wheels.length;
+                    wheels = new Array(numWheels);
 
                     // Create and initialize all wheels
                     for (var i = 0; i < numWheels; i++) {
                         // Create new wheelnav and add to array of wheels
                         if (i == 0) {
-                            wheels[i] = new wheelnav('wheelDiv', null);
+                            wheels[i] = new wheelnav('wheelDiv');
                         }
                         else {
                             wheels[i] = new wheelnav('wheelDiv', wheels[0].raphael);
@@ -72,8 +73,15 @@
                         wheels[i].slicePathCustom = slicePath().DonutSliceCustomization();
                         wheels[i].slicePathCustom.minRadiusPercent = wheelData.minRadiusPercent;
                         wheels[i].slicePathCustom.maxRadiusPercent = wheelData.maxRadiusPercent;
-                        wheels[i].sliceSelectedPathCustom = wheels[i].slicePathCustom;
                         wheels[i].sliceInitPathCustom = wheels[i].slicePathCustom;
+                        wheels[i].sliceHoverPathCustom = wheels[i].slicePathCustom;
+                        wheels[i].sliceSelectedPathCustom = wheels[i].slicePathCustom;
+                        wheels[i].slicePathAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.60 };
+                        wheels[i].sliceHoverAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.85 };
+                        wheels[i].sliceSelectedAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.60 };
+                        wheels[i].titleAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
+                        wheels[i].titleHoverAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
+                        wheels[i].titleSelectedAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
                         wheels[i].createWheel(wheelData.labels);
                         
                         // Clear selected items and add mouse functions
@@ -112,7 +120,7 @@
 <body>
     <!-- Generated HTML code -->
     <div id="container">
-        <div id='wheelDiv' data-wheelnav data-wheelnav-cssmode data-wheelnav-init>
+        <div id='wheelDiv'>
         </div>
     </div>
 </body>

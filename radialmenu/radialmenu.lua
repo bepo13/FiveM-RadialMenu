@@ -39,6 +39,13 @@ Citizen.CreateThread(function()
         resourceName = GetCurrentResourceName()
     })
 
+    -- Hide UI
+    showMenu = false
+    SetNuiFocus(false, false)
+    SendNUIMessage({
+        type = 'hide'
+    })
+
     -- Set keybind control
     keybindControl = keybindControls[menuConfig.keybind]
 
