@@ -6,15 +6,15 @@
     <script type="text/javascript" src="wheelnav.min.js"></script>
     <script type="text/javascript" src="nui://game/ui/jquery.js"></script>
 
-    <!-- Generated CSS code -->
+    <!-- Default CSS styles -->
     <style>
         #wheelDiv > svg {
             width: 100%;
             height: 100%;
         }
         #wheelDiv {
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
             margin: auto;
         }
         #container {
@@ -23,30 +23,12 @@
         }
     </style>
 
-    <!-- Generated Javascript code -->
+    <!-- Javascript code -->
     <script type="text/javascript">
         $(function() {
             window.addEventListener('message', function(event) {
-                // Show radial menu
-                if (event.data.type == 'show') {
-                    document.body.style.display = "block";
-
-                    // Clear selected and refresh wheels
-                    for (var i = 0; i < numWheels; i++) {
-                        for (var j = 0; j < wheels[i].navItems.length; j++) {
-                            // Clear selected
-                            wheels[i].navItems[j].selected = false;
-                        }
-                        // Refresh menu
-                        wheels[i].refreshWheel();
-                    }
-                }
-                // Hide radial menu
-                else if (event.data.type == 'hide') {
-                    document.body.style.display = "none";
-                }
-                // Initialize radial menu
-                else if (event.data.type == 'init') {
+                // Initialize menu
+                if (event.data.type == 'init') {
                     // Set global keybind and resource name
                     menuKeybind = event.data.data.keybind;
                     resourceName = event.data.resourceName
@@ -55,11 +37,23 @@
                     numWheels = event.data.data.wheels.length;
                     wheels = new Array(numWheels);
 
+                    // Get wheel style settings
+                    wheelStyle = event.data.data.style;
+
+                    // Set wheel size
+                    var wheelSize = wheelStyle.sizePx;
+                    document.getElementById("wheelDiv").style.width = wheelSize+"px";
+                    document.getElementById("wheelDiv").style.height = wheelSize+"px";
+
+                    // Set top margin to center wheel
+                    var marginTopSize = ($(window).height() - wheelSize) / 2;
+                    document.getElementById("container").style.marginTop = marginTopSize+"px";
+
                     // Create and initialize all wheels
                     for (var i = 0; i < numWheels; i++) {
                         // Create new wheelnav and add to array of wheels
                         if (i == 0) {
-                            wheels[i] = new wheelnav('wheelDiv');
+                            wheels[i] = new wheelnav('wheelDiv', null);
                         }
                         else {
                             wheels[i] = new wheelnav('wheelDiv', wheels[0].raphael);
@@ -76,12 +70,12 @@
                         wheels[i].sliceInitPathCustom = wheels[i].slicePathCustom;
                         wheels[i].sliceHoverPathCustom = wheels[i].slicePathCustom;
                         wheels[i].sliceSelectedPathCustom = wheels[i].slicePathCustom;
-                        wheels[i].slicePathAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.60 };
-                        wheels[i].sliceHoverAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.85 };
-                        wheels[i].sliceSelectedAttr = { fill: '#555', stroke: '#aaa', 'stroke-width': 2, 'fill-opacity': 0.60 };
-                        wheels[i].titleAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
-                        wheels[i].titleHoverAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
-                        wheels[i].titleSelectedAttr = { fill: '#fff', stroke: 'none', font: 'Verdana', 'font-size': 12 };
+                        wheels[i].slicePathAttr = wheelStyle.slices.default;
+                        wheels[i].sliceHoverAttr = wheelStyle.slices.hover;
+                        wheels[i].sliceSelectedAttr = wheelStyle.slices.selected;
+                        wheels[i].titleAttr = wheelStyle.titles.default;
+                        wheels[i].titleHoverAttr = wheelStyle.titles.hover;
+                        wheels[i].titleSelectedAttr = wheelStyle.titles.selected;
                         wheels[i].createWheel(wheelData.labels);
                         
                         // Clear selected items and add mouse functions
@@ -102,9 +96,17 @@
                         // Refresh menu
                         wheels[i].refreshWheel();
                     }
-
-                    // Hide menu by default
-                    document.body.style.display = "none";
+                }
+                // Destroy menu
+                else if (event.data.type == 'destroy') {
+                    // Remove all wheels when they exist
+                    if ((typeof wheels !== 'undefined') && (typeof numWheels !== 'undefined')) {
+                        for (var i = 0; i < numWheels; i++) {
+                            wheels[i].removeWheel();
+                        }
+                        delete wheels;
+                        delete numWheels;
+                    }
                 }
             });
             window.addEventListener("keyup", function onEvent(event) {
@@ -118,9 +120,9 @@
 
 </head>
 <body>
-    <!-- Generated HTML code -->
+    <!-- HTML code -->
     <div id="container">
-        <div id='wheelDiv'>
+        <div id='wheelDiv' data-wheelnav>
         </div>
     </div>
 </body>
