@@ -10,14 +10,18 @@ menuConfigs = {
             style = {                               -- Wheel style settings
                 sizePx = 600,                       -- Wheel size in pixels
                 slices = {                          -- Slice style settings
-                    default = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 2, ['opacity'] = 0.60 },
-                    hover = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 2, ['opacity'] = 1.00 },
-                    selected = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 2, ['opacity'] = 0.60 }
+                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.40 },
+                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.60 },
+                    selected = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.40 }
                 },
                 titles = {                          -- Text style settings
-                    default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 12 },
-                    hover = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 12 },
-                    selected = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 12 }
+                    default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
+                    hover = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
+                    selected = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' }
+                },
+                icons = {
+                    width = 64,
+                    height = 64
                 }
             },
             wheels = {                              -- Array of wheels to display
@@ -38,8 +42,7 @@ menuConfigs = {
             }
         }
     },
-
-    ['vehicles'] = {                                -- Example menu for emotes when player is in a vehicle
+    ['vehicles'] = {                                -- Example menu for vehicle controls when player is in a vehicle
         enableMenu = function()                     -- Function to enable/disable menu handling
             local player = GetPlayerPed(-1)
             return IsPedInAnyVehicle(player, false)
@@ -49,22 +52,26 @@ menuConfigs = {
             style = {                               -- Wheel style settings
                 sizePx = 400,                       -- Wheel size in pixels
                 slices = {                          -- Slice style settings
-                    default = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 3, ['opacity'] = 0.60 },
-                    hover = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 3, ['opacity'] = 1.00 },
-                    selected = { ['fill'] = '#555555', ['stroke'] = '#aaaaaa', ['stroke-width'] = 3, ['opacity'] = 0.60 }
+                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.40 },
+                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.60 },
+                    selected = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.40 }
                 },
                 titles = {                          -- Text style settings
-                    default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 16 },
-                    hover = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 16 },
-                    selected = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Verdana', ['font-size'] = 16 }
+                    default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
+                    hover = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
+                    selected = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' }
+                },
+                icons = {
+                    width = 64,
+                    height = 64
                 }
             },
             wheels = {                              -- Array of wheels to display
                 {
                     navAngle = 270,                 -- Oritentation of wheel
                     minRadiusPercent = 0.4,         -- Minimum radius of wheel in percentage
-                    maxRadiusPercent = 0.8,         -- Maximum radius of wheel in percentage
-                    labels = {"ENGINE", "LOCK", "DOORS", "TRUNK", "HOOD"},
+                    maxRadiusPercent = 0.9,         -- Maximum radius of wheel in percentage
+                    labels = {"imgsrc:engine.png", "imgsrc:key.png", "imgsrc:doors.png", "imgsrc:trunk.png", "imgsrc:hood.png"},
                     commands = {"engine", "lock", "rdoors", "trunk", "hood"}
                 }
             }
