@@ -6,13 +6,13 @@ menuConfigs = {
             return IsPedOnFoot(player)
         end,
         data = {                                    -- Data that is passed to Javascript
-            keybind = "F6",                         -- Wheel keybind to use
+            keybind = "F6",                         -- Wheel keybind to use (case sensitive, must match entry in keybindControls table)
             style = {                               -- Wheel style settings
                 sizePx = 600,                       -- Wheel size in pixels
                 slices = {                          -- Slice style settings
-                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.40 },
-                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.60 },
-                    selected = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.40 }
+                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.60 },
+                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.80 },
+                    selected = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 2, ['opacity'] = 0.80 }
                 },
                 titles = {                          -- Text style settings
                     default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
@@ -48,13 +48,13 @@ menuConfigs = {
             return IsPedInAnyVehicle(player, false)
         end,
         data = {                                    -- Data that is passed to Javascript
-            keybind = "F6",                         -- Wheel keybind to use
+            keybind = "F6",                         -- Wheel keybind to use (case sensitive, must match entry in keybindControls table)
             style = {                               -- Wheel style settings
                 sizePx = 400,                       -- Wheel size in pixels
                 slices = {                          -- Slice style settings
-                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.40 },
-                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.60 },
-                    selected = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.40 }
+                    default = { ['fill'] = '#000000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.60 },
+                    hover = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.80 },
+                    selected = { ['fill'] = '#ff8000', ['stroke'] = '#000000', ['stroke-width'] = 3, ['opacity'] = 0.80 }
                 },
                 titles = {                          -- Text style settings
                     default = { ['fill'] = '#ffffff', ['stroke'] = 'none', ['font'] = 'Helvetica', ['font-size'] = 16, ['font-weight'] = 'bold' },
