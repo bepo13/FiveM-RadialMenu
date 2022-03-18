@@ -2,7 +2,7 @@
 menuConfigs = {
     ['emotes'] = {                                  -- Example menu for emotes when player is on foot
         enableMenu = function()                     -- Function to enable/disable menu handling
-            local player = GetPlayerPed(-1)
+            local player = PlayerPedId()
             return IsPedOnFoot(player)
         end,
         data = {                                    -- Data that is passed to Javascript
@@ -44,7 +44,7 @@ menuConfigs = {
     },
     ['vehicles'] = {                                -- Example menu for vehicle controls when player is in a vehicle
         enableMenu = function()                     -- Function to enable/disable menu handling
-            local player = GetPlayerPed(-1)
+            local player = PlayerPedId()
             return IsPedInAnyVehicle(player, false)
         end,
         data = {                                    -- Data that is passed to Javascript
